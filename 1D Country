@@ -1,0 +1,49 @@
+import java.util.*;
+public class Main {
+    static int lowerBound(long[] arr, long target) {
+        int left = 0, right = arr.length;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] >= target)
+                right = mid;
+            else
+                left = mid + 1;
+        }
+        return left;
+    }
+    static int upperBound(long[] arr, long target) {
+        int left = 0, right = arr.length;
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] > target)
+                right = mid;
+            else
+                left = mid + 1;
+        }
+        return left;
+    }
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        long[] X = new long[N];
+        long[] P = new long[N];
+        for (int i = 0; i < N; i++)
+            X[i] = sc.nextLong();
+        for (int i = 0; i < N; i++)
+            P[i] = sc.nextLong();
+        long[] prefix = new long[N + 1];
+        prefix[0] = 0;
+        for (int i = 0; i < N; i++) {
+            prefix[i + 1] = prefix[i] + P[i];
+        }
+        int Q = sc.nextInt();
+        while (Q-- > 0) {
+            long L = sc.nextLong();
+            long R = sc.nextLong();
+            int left = lowerBound(X, L);
+            int right = upperBound(X, R);
+            long answer = prefix[right] - prefix[left];
+            System.out.println(answer);
+        }
+    }
+}
